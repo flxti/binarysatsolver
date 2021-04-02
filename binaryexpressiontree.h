@@ -13,9 +13,6 @@
 
 namespace BinSAT {
 
-/* Haette man sicher auch noch besser wiederverwendbarer mit templates
- * machen koennen, vor allem die Operatoren mit Klassen, aber
- * dann waere das etwas zu kompliziert fuer 48h geworden. */
 class Node;
 class BinaryExpressionTree;
 
@@ -35,7 +32,7 @@ size_t position(std::set<T> const& s, T const& key) {
     auto res = s.find(key);
     if (res == s.end())
         throw std::runtime_error("position of key in set: could not find key in set");
-    return static_cast<size_t>(std::distance(s.begin(), s.find(key)));
+    return static_cast<size_t>(std::distance(s.begin(), res));
 }
 
 /* Standard node class with a char as key */
@@ -46,7 +43,6 @@ private:
     std::unique_ptr<Node> m_right;
 public:
     Node(char const& val) : m_value(val), m_left(nullptr), m_right(nullptr) { }
-    //Node(Node const& node) {}
     Node(Node&& node) noexcept :
         m_value(node.getValue()),
         m_left(std::move(node.m_left)),
@@ -55,26 +51,29 @@ public:
     void setValue(char const& val) {
         this->m_value=val;
     }
+
     char getValue() const {
         return this->m_value;
     }
+
     std::unique_ptr<Node>& getLeftChild() {
         return this->m_left;
     }
+
     std::unique_ptr<Node>& getRightChild() {
         return this->m_right;
     }
+
     void setLeftChild(std::unique_ptr<Node> node_ptr) {
         this->m_left = std::move(node_ptr);
     }
+
     void setRightChild(std::unique_ptr<Node> node_ptr) {
         this->m_right = std::move(node_ptr);
     }
 };
 
-/* One node represents an operator or a variable.
- *
- */
+/* One node represents an operator or a variable. */
 class BinaryExpressionTree {
 private:
     std::unique_ptr<Node> m_root;
@@ -99,9 +98,11 @@ public:
     void setRoot(std::unique_ptr<Node> node_ptr) {
         this->m_root = std::move(node_ptr);
     }
+
     std::unique_ptr<Node>& getRoot() {
         return this->m_root;
     }
+
     bool isEmpty() const {
         return this->m_root==nullptr;
     }
@@ -109,6 +110,7 @@ public:
     void preOrder() {
         this->preOrder(this->getRoot());
     }
+
     void inOrder() {
         this->inOrder(this->getRoot());
     }

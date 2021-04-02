@@ -16,10 +16,10 @@ public:
 };
 
 class Parser {
+private:
     std::stack<std::unique_ptr<Node>> stack;
     void insert(char const& c);
 public:
-    /* Represent a formula (in NPN) as a binary expression tree */
     BinaryExpressionTree createBET(std::string const& formula);
 };
 }
